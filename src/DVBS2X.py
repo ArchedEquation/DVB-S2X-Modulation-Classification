@@ -3,6 +3,28 @@ import matplotlib.pyplot as plt
 
 
 class DVBS2X:
+    """
+    A class to generate DVB-S2X waveforms with various modulation schemes
+
+    Parameters
+    ----------
+    num_symbols : int
+        Number of symbols to generate
+    samples_per_symbol : int
+        Number of samples per symbol
+    carrier_freq : float
+        Carrier frequency in Hz
+
+    Attributes
+    ----------
+    num_symbols : int
+        Number of symbols to generate
+    samples_per_symbol : int
+        Number of samples per symbol
+    carrier_freq : float
+        Carrier frequency in Hz
+    """
+
     def __init__(self, num_symbols, samples_per_symbol, carrier_freq):
         self.num_symbols = num_symbols
         self.samples_per_symbol = samples_per_symbol
@@ -62,6 +84,21 @@ class DVBS2X:
         return self.modulate(symbols), symbols, bits
 
     def modulate(self, symbols):
+        """
+        Modulates the given symbols using the carrier frequency and samples_per_symbol.
+
+        Parameters
+        ----------
+        symbols : array_like
+            The complex symbols to be modulated.
+
+        Returns
+        -------
+        t : array_like
+            The time array for the modulated signal.
+        signal : array_like
+            The modulated signal.
+        """
         t = np.arange(self.num_symbols * self.samples_per_symbol) / \
             (self.carrier_freq * self.samples_per_symbol)
         upsampled = np.repeat(symbols, self.samples_per_symbol)
@@ -71,6 +108,20 @@ class DVBS2X:
         return t, signal
 
     def plot_signal(self, t, signal, modulation_type, num_symbols_to_plot=10):
+        """
+        Plot the given signal for a limited number of symbols.
+
+        Parameters
+        ----------
+        t : array_like
+            The time array of the signal.
+        signal : array_like
+            The modulated signal.
+        modulation_type : str
+            The type of modulation used for the signal.
+        num_symbols_to_plot : int, optional
+            The number of symbols to plot. Defaults to 10.
+        """
         samples_to_plot = num_symbols_to_plot * self.samples_per_symbol
         plt.figure(figsize=(12, 6))
         plt.plot(t[:samples_to_plot], signal[:samples_to_plot])
@@ -82,7 +133,23 @@ class DVBS2X:
         plt.show()
 
     def add_noise(self, signal, snr_db):
-        """ Add Gaussian noise to the signal based on the desired SNR in dB. """
+        """
+        Adds White Gaussian Noise to the given signal based on the desired SNR in dB.
+
+        Parameters
+        ----------
+        signal : array_like
+            The modulated signal.
+        snr_db : float
+            The desired Signal-to-Noise Ratio (SNR) in decibels.
+
+        Returns
+        -------
+        noisy_signal : array_like
+            The signal with added noise.
+        noise : array_like
+            The added noise.
+        """
         signal_power = np.mean(np.abs(signal)**2)
         snr_linear = 10 ** (snr_db / 10.0)
         noise_power = signal_power / snr_linear
@@ -91,7 +158,21 @@ class DVBS2X:
         return noisy_signal, noise
 
     def calculate_snr(self, signal, noise):
-        """ Calculate the Signal-to-Noise Ratio (SNR) based on the signal and noise. """
+        """
+        Calculates the Signal-to-Noise Ratio (SNR) based on the given signal and noise.
+
+        Parameters
+        ----------
+        signal : array_like
+            The modulated signal.
+        noise : array_like
+            The noise added to the signal.
+
+        Returns
+        -------
+        snr_db : float
+            The calculated SNR in decibels.
+        """
         signal_power = np.mean(np.abs(signal)**2)
         noise_power = np.mean(np.abs(noise)**2)
         snr_linear = signal_power / noise_power
@@ -99,6 +180,20 @@ class DVBS2X:
         return snr_db
 
     def plot_constellation(self, symbols, modulation_type):
+        """
+        Plots the constellation diagram of the given symbols and modulation type.
+
+        Parameters
+        ----------
+        symbols : array_like
+            The modulated symbols.
+        modulation_type : str
+            The type of modulation used for the symbols.
+
+        Returns
+        -------
+        None
+        """
         plt.figure(figsize=(8, 8))
         plt.scatter(symbols.real, symbols.imag, c='r', alpha=0.5)
         plt.title(f'{modulation_type} Constellation Diagram')

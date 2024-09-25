@@ -109,7 +109,7 @@ class DVBS2X:
         plt.show()
 
 
-def run_example():
+def demo():
     dvbs2x = DVBS2X(num_symbols=1000, samples_per_symbol=8, carrier_freq=1e6)
 
     modulation_schemes = [
@@ -134,7 +134,3 @@ def run_example():
 
         dvbs2x.plot_signal(t, noisy_signal, name)
         # dvbs2x.plot_constellation(symbols, name)
-
-
-if __name__ == "__main__":
-    run_example()

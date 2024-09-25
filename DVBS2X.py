@@ -82,21 +82,21 @@ class DVBS2X:
         plt.show()
 
     def add_noise(self, signal, snr_db):
+        """ Add Gaussian noise to the signal based on the desired SNR in dB. """
         signal_power = np.mean(np.abs(signal)**2)
-        snr_linear = 10**(snr_db / 10)
+        snr_linear = 10 ** (snr_db / 10.0)
         noise_power = signal_power / snr_linear
-
-        noise = np.sqrt(noise_power / 2) * np.random.randn(len(signal))
-
+        noise = np.sqrt(noise_power) * np.random.normal(size=signal.shape)
         noisy_signal = signal + noise
         return noisy_signal, noise
 
     def calculate_snr(self, signal, noise):
+        """ Calculate the Signal-to-Noise Ratio (SNR) based on the signal and noise. """
         signal_power = np.mean(np.abs(signal)**2)
         noise_power = np.mean(np.abs(noise)**2)
-
-        snr = 10 * np.log10(signal_power / noise_power)
-        return snr
+        snr_linear = signal_power / noise_power
+        snr_db = 10 * np.log10(snr_linear)
+        return snr_db
 
     def plot_constellation(self, symbols, modulation_type):
         plt.figure(figsize=(8, 8))

@@ -1,8 +1,10 @@
 import time
+import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from src.utils import save_csv
 from src.model import dataset_creation, modelling, pf_metrics, weighted_score
-
+np.random.seed(42)
 if __name__ == "__main__":
     start_time = time.time()
 

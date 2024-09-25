@@ -63,16 +63,19 @@ def weighted_score(model, start_time, end_time, X_test, y_test, weight_for_accur
 
         score = (weight_for_accuracy * accuracy) - (weight_for_latency *
                                                     normalized_latency) - (weight_for_model_size * normalized_size)
-
+        
         result_string = (
             f"Accuracy: {accuracy:.3f}\n"
-            f"Normalized Latency: {
-                normalized_latency:.3f} and Latency: {latency}\n"
-            f"Normalized Size: {normalized_size:.3f} and Size: {
-                model_size} in Bytes\n"
-            f"Final Power-Efficient Score: {score:.3f}")
+            f"Normalized Latency: {normalized_latency:.3f} and Latency: {latency}\n"
+            f"Normalized Size: {normalized_size:.3f} and Size: {model_size} in Bytes\n"
+            f"Final Power-Efficient Score: {score:.3f}"
+        )
 
         return result_string
+
+    except Exception as e:
+        print(f"Error calculating power-efficient score: {e}")
+        return None
 
     except Exception as e:
         print(f"Error calculating power-efficient score: {e}")

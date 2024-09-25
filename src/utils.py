@@ -3,12 +3,41 @@ import numpy as np
 
 
 def cyclic_autocorrelation(signal, lag):
+    """
+    Computes the cyclic autocorrelation of a signal at a given lag.
+
+    Parameters
+    ----------
+    signal : array_like
+        The input signal.
+    lag : int
+        The lag at which to compute the cyclic autocorrelation.
+
+    Returns
+    -------
+    acf : complex
+        The cyclic autocorrelation of the signal at the given lag.
+    """
     return np.mean(signal[:-lag] * np.conjugate(signal[lag:]))
 
 
 def compute_scd(signal, freqs, alpha):
     """
-    Computes the Spectral Correlation Density (SCD) at a given cyclic frequency (alpha).
+    Computes the spectral correlation density (SCD) of a signal at a given cyclic frequency `alpha`.
+
+    Parameters
+    ----------
+    signal : array_like
+        The input signal.
+    freqs : array_like
+        The frequencies at which to compute the SCD.
+    alpha : float
+        The cyclic frequency at which to compute the SCD.
+
+    Returns
+    -------
+    scd : array_like
+        The SCD of the signal at the given frequencies and cyclic frequency.
     """
     N = len(signal)
     scd = np.zeros(len(freqs), dtype=complex)
@@ -27,6 +56,32 @@ def compute_scd(signal, freqs, alpha):
 
 
 def weighted_score(model, start_time, end_time, X_test, y_test, weight_for_latency=0.2, weight_for_model_size=0.1):
+    """
+    Computes a weighted score for a given model, taking into account its latency,
+    accuracy, and model size.
+
+    Parameters
+    ----------
+    model : object
+        The model object to be scored.
+    start_time : float
+        The start time of the model inference.
+    end_time : float
+        The end time of the model inference.
+    X_test : array_like
+        The input data for the model.
+    y_test : array_like
+        The true labels for the model.
+    weight_for_latency : float, optional
+        The weight for the latency score. Default is 0.2.
+    weight_for_model_size : float, optional
+        The weight for the model size score. Default is 0.1.
+
+    Returns
+    -------
+    score : float
+        The weighted score for the model.
+    """
     try:
         accuracy = model.score(X_test, y_test)
         _ = model.predict(X_test)

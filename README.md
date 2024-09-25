@@ -42,7 +42,7 @@ Our workflow is as follows:
 
 ## To Run: 
 
-### Step 1: Create a conda environment with the 
+### Step 1: Create a conda environment.
 One can do so by running the command: 
 ```bash
 conda create -n <env_name>
@@ -53,7 +53,7 @@ conda create -n <env_name>
 pip install -r requirements.txt
 ```
 
-### Step 3: Running main.py 
+### Step 3: Running `main.py`.
 
 The `main.py` file contains the script that creates the train and test data from the features specified, as well as the noise and the symbols which are passed as variables. Simply running: 
 ```bash
